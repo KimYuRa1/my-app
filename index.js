@@ -78,9 +78,38 @@ app.post('/api/users/login', (req, res)=>{
 /*
   권한(auth) 확인
   : auth라는 미들웨어는 /를 통해 request를 만든 다음, callback function을 하기 전에, 중간에서 일함.
-  //여기까지 미들웨어를 통과해 왔다는 얘기는 Authentification = true라는 말.
+   + 여기까지 미들웨어를 통과해 왔다는 얘기는 Authentification = true라는 말.
 */
-app.get('/api/users/auth', auth , (req,res) => {
+app.get('/api/users/auth', auth , (req, res)=> { //auth라는 미들웨어 : /를 통해 request를 만든 다음, callback function을 하기 전에, 중간에서 일함.
+  //여기까지 미들웨어를 통과해 왔다는 얘기는 Authentification이 true라는 말.
+  res.status(200).json({ //이렇게 정보를 주면 어떤 페이지에서든지 user 정보를 이용할 수 있게 되어 편함.
+    //user정보들 제공해주기
+    _id: req.user._id,
+    isAdmin: req.user.role === 0 ? false : true, //role이 0이면 일반유저, role이 0이 아니면 관리자.
+    isAuth: true,
+    email: req.user.email,
+    name: req.user.name,
+    lastname: req.user.lastname,
+    role: req.user.role,
+    image: req.user.image
+  })
+})
+
+/*
+  로그아웃
+
+*/
+app.get('/api/users/logout', auth, (req,res) => {
+  //로그 아웃 하려는 유저를 데이터 베이스에서 찾아서
+  User2.findOneAndUpdate( {_id: req.user._id}, //auth middleware에서 req에 넣어준 id
+    {token: ""} //token 지워줌
+    ,(err,user) => {
+      if(err) return res.json({success: false, err});
+      return res.status(200).send({
+        success: true
+      })
+    }
+  )
 
 })
 
