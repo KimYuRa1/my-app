@@ -5,6 +5,7 @@ import {useDispatch} from 'react-redux';
 import {loginUser} from '../../../_actions/user_action';
 import user_reducer from '../../../_reducers/user_reducer';
 import {useNavigate} from 'react-router-dom'; //// react-router-dom v6업데이트로 history로 페이지이동 시 오류  =>useNavigate사용으로 해결 https://kyung-a.tistory.com/36
+import Auth from "../../../hoc/auth"
 
 function LoginPage() {
   const navigate = useNavigate();/* */
@@ -52,4 +53,4 @@ function LoginPage() {
   )
 }
 
-export default LoginPage
+export default Auth(LoginPage,false); //로그인한 유저는 들어올 수 없는 페이지

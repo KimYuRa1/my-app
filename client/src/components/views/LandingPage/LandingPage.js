@@ -1,6 +1,7 @@
 import React,{useEffect} from 'react'
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
+import Auth from "../../../hoc/auth"
 
 function LandingPage() {
   const navigate = useNavigate();
@@ -33,4 +34,4 @@ function LandingPage() {
   )
 }
 
-export default LandingPage
+export default Auth(LandingPage, null);//로그인 여부 상관 없이 누구나 들어올 수 있는 페이지
