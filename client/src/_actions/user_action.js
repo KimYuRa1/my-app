@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {
-    LOGIN_USER
+    LOGIN_USER,
+    REGISTER_USER
 }from './types' //_actions > types.js 파일에서 LOGIN_USER라는 action type을 가져와 쓸 것임.
 
 export function loginUser(dataToSubmit){ //loginPage.js에서 준 body의 정보 ( dispatch(loginUser(body)) )를 dataToSubmit파라미터를 통해 받아옴
@@ -12,4 +13,14 @@ export function loginUser(dataToSubmit){ //loginPage.js에서 준 body의 정보
             type: "LOGIN_USER",
             payload : request
         }
+}
+
+export function registerUser(dataToSubmit){
+    const request = axios.post('api/users/register', dataToSubmit) //server>index.js의 /api/users/register로 이동.
+    .then(response => response.data) // server에서 받은 data를 request에 저장함
+
+    return{ //reducer로 보냄 (이전state + 현재action 조합 => 다음 state)
+        type : "REGISTER_USER",
+        payload : request
+    }
 }
